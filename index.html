@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPSEA 2026 Success Wish & Digital Card</title>
+    <!-- Google Fonts & Canvas Confetti Library -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Outfit:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --primary-dark: #5A49E0;
+            --secondary: #FF7675;
+            --accent: #FDCB6E;
+            --mint: #00B894;
+            --bg-grad-1: #0A0E27;
+            --bg-grad-2: #1A1F4C;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --gold: #FFD700;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            color: #2D3436;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Floating Elements */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #ffd700, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #a29bfe, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.6;
+            animation: starsMove 20s linear infinite;
+        }
+
+        @keyframes starsMove {
+            from { background-position: 0 0; }
+            to { background-position: 200px 400px; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Card Stage Shell */
+        .stage-box {
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 2.2rem 1.8rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5),
+                        0 0 30px rgba(108, 92, 231, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Interactive Envelope Trigger */
+        .envelope-wrapper {
+            cursor: pointer;
+            perspective: 1000px;
+            margin: 1rem 0 2rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .envelope {
+            width: 100%;
+            max-width: 300px;
+            height: 190px;
+            background: #FF7675;
+            margin: 0 auto;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.03) translateY(-5px);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #D63031;
+            transform-origin: top;
+            transition: transform 0.5s ease;
+            z-index: 3;
+        }
+
+        .envelope-seal {
+            position: absolute;
+            z-index: 4;
+            background: var(--gold);
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 2px solid #FFF;
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,215,0,0.6); }
+            50% { transform: scale(1.08); box-shadow: 0 0 0 12px rgba(255,215,0,0); }
+        }
+
+        .badge-kpsea {
+            display: inline-block;
+            background: linear-gradient(135deg, #6C5CE7, #a29bfe);
+            color: #FFF;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+        }
+
+        h1.title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            color: #2D3436;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        p.subtitle {
+            font-size: 1.05rem;
+            color: #636E72;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-name {
+            color: var(--primary);
+            font-weight: 800;
+
+        }
+
+        /* Candidate Photo Slot Styling */
+        .photo-container {
+            margin: 1rem auto 1.5rem;
+            width: 130px;
+            height: 130px;
+            position: relative;
+        }
+
+        .candidate-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: fill; /* Shows the full photo without cutting */
+            background: #FFFFFF;  /* Clean background for any empty space */
+            border: 4px solid var(--gold);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+            transition: transform 0.3s ease;
+
+        }
+
+        .photo-container:hover .candidate-photo {
+            transform: scale(1.05);
+        }
+
+        /* Message Box Styling */
+        .message-card {
+            background: #F8F9FA;
+            border-radius: 18px;
+            padding: 1.5rem;
+            border: 2px solid #EDF2F7;
+            text-align: left;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .message-card p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #2D3436;
+            margin-bottom: 1rem;
+        }
+
+        .message-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Schedule / Tips Section */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .tip-item {
+            background: #FFF;
+            padding: 1rem;
+            border-radius: 14px;
+            border: 1px solid #E2E8F0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4A5568;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .tip-icon {
+            font-size: 1.4rem;
+        }
+
+        /* Audio Control Toggle */
+        .audio-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 20;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Hidden States */
+        .card-content {
+            display: none;
+        }
+
+        .card-content.open {
+            display: block;
+            animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        footer {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CUSTOM SONG AUDIO ELEMENT -->
+    <audio id="customAudio" src="Success%20Song.mp3" loop></audio>
+
+    <div class="stars-bg"></div>
+
+    <div class="container">
+        <div class="stage-box">
+            <button class="audio-toggle" id="soundBtn" title="Toggle Music">🎵</button>
+
+            <!-- ENVELOPE / OPENING VIEW -->
+            <div id="envelopeView">
+                <div class="badge-kpsea">KPSEA 2026 Assessment Wishes ✨</div>
+                <h1 class="title">Success Card! ✉️</h1>
+                <p class="subtitle">A success wish for our star candidate!</p>
+
+                <div class="envelope-wrapper" onclick="openCard()">
+                    <div class="envelope">
+                        <div class="envelope-flap" id="flap"></div>
+                        <div class="envelope-seal">🌟</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.95rem; color: #718096; font-weight: 600;">
+                    👉 Tap the envelope to unseal your wish!
+                </p>
+            </div>
+
+            <!-- UNSEALED CARD CONTENT VIEW -->
+            <div id="cardView" class="card-content">
+                <div class="badge-kpsea">National Exams Wish 🎓</div>
+
+                <h1 class="title">Success in your exams, <span class="highlight-name">Tiffany</span>! ✨</h1>
+                <p class="subtitle" style="margin-bottom: 0.8rem;">You've prepared, you're ready, and you're going to shine bright!</p>
+
+                <!-- CANDIDATE PHOTO SLOT -->
+                <div class="photo-container">
+                    <img src="Tiff.jpg" alt="Tiffany" class="candidate-photo" id="candidateImg" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=80'">
+                </div>
+
+                <div class="message-card">
+                    <p>
+                       Dearest Tiff, as you step into your KPSEA examinations starting tomorrow morning, take a deep breath and know how incredibly proud we are of you. You’ve put in the time, the focus, and the effort, and now it’s time to let your brilliant mind shine. Don't stress or second-guess yourself—just stay calm, trust your preparation, and take it one question at a time. We are cheering for you every single step of the way from wherever we are. You've got this, and you're going to do amazingly well! 🌟❤️
+                    </p>
+                    <p style="font-weight: 700; color: var(--primary); text-align: right;">
+                        — With lots of love & prayers from Uncle Kim, Auntie Cate, Bryan, Taneesha and Taliah ❤️
+                    </p>
+                </div>
+
+                <div class="tips-grid">
+                    <div class="tip-item">
+                        <span class="tip-icon">🧠</span>
+                        <span>Read all questions twice</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">⏰</span>
+                        <span>Manage your exam time</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">✨</span>
+                        <span>Believe in yourself</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">🙏</span>
+                        <span>Pray before starting</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            Crafted with ❤️ for you Tiff 😊
+        </footer>
+    </div>
+
+    <script>
+        const audio = document.getElementById('customAudio');
+        let musicPlaying = false;
+
+        function startMusic() {
+            audio.play().then(() => {
+                musicPlaying = true;
+                document.getElementById('soundBtn').textContent = '🎵';
+            }).catch(e => {
+                console.log("Audio play blocked by browser policy:", e);
+            });
+        }
+
+        function stopMusic() {
+            audio.pause();
+            musicPlaying = false;
+            document.getElementById('soundBtn').textContent = '🔇';
+        }
+
+        // Toggle Sound State via Button
+        document.getElementById('soundBtn').addEventListener('click', () => {
+            if (musicPlaying) {
+                stopMusic();
+            } else {
+                startMusic();
+            }
+        });
+
+        // Interactive Envelope Unsealing & Celebration
+        function openCard() {
+            startMusic();
+
+            const count = 200;
+            const defaults = { origin: { y: 0.6 } };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55, colors: ['#6C5CE7', '#FF7675'] });
+            fire(0.2, { spread: 60, colors: ['#FFD700', '#00B894'] });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+
+            document.getElementById('envelopeView').style.display = 'none';
+            document.getElementById('cardView').classList.add('open');
+        }
+    </script>
+</body>
+</html>
